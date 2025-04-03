@@ -302,6 +302,8 @@ public class MyService {
 
 ## 순수 JDBC
 
+- 자바는 DB연결하려면 JDBC 드라이버가 필수
+
 ## 스프링 통합 테스트
 
 ## 스프링 jdbc template
