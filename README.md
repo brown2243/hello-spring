@@ -140,17 +140,17 @@ java -jar build/libs/hello-spring-0.0.1-SNAPSHOT.jar
 
 ## 컴포넌트 스캔과 자동 의존관계 설정
 
-- @Controller 있으면, 스프링이 객체 생성 및 관리
+- `@Controller` 있으면, 스프링이 객체 생성 및 관리
 - 스프링 컨테이너에서 스프링 빈이 관리된다 라는 표현을 사용
 - 하나의 서비스를 여러 컨트롤러에서 사용할 수 있는데, 전통적으로 new 로 생성하면 다른 객체를 사용함
   - JS에선 파일에서 객체를 생성하고 참조를 export 하는게 가능
 - 스프링 컨테이너에 등록하면 하나만 생성되고, 여러 부가적 장점이 있음!
-- @AutoWired이 붙으면 스프링 컨테이너가 객체 실행시, 등록된 객체의 참조를 주입
+- `@AutoWired`이 붙으면 스프링 컨테이너가 객체 실행시, 등록된 객체의 참조를 주입
 - DI
 
 ### 스프링 빈을 등록하는 2가지 방법
 
-- 컴포넌트 스캔과 자동 의존관계 설정
+- `컴포넌트 스캔`과 `@AutoWired` 자동 의존관계 설정
 - 자바 코드로 직접 등록
 
 - `@Component` 를 포함하는 다음 애노테이션도 스프링 빈으로 자동 등록된다.
@@ -181,3 +181,104 @@ public @interface Service {
   - 설정으로 싱글톤이 아니게 가능하지만 일반적으로 사용안함
 
 ## 자바 코드로 직접 스프링 빈 등록하기
+
+- 아래처럼 넣어줌
+
+```java
+@Configuration
+public class SpringConfig {
+
+  @Bean
+  public MemberService memberService() {
+    return new MemberService(memberRepository());
+  }
+
+  @Bean
+  public MemberRepository memberRepository() {
+    return new MemoryMemberRepository();
+  }
+}
+```
+
+- `XML`로도 설정 가능(레거시)
+
+### DI 3가지 방법
+
+- **생성자 주입** - 가장 권장 하는 방식
+- 필드 주입 `@Autowried`
+  - 바꿔 줄 수 있는 방법이 없음
+- setter 주입 `@Autowried`
+  - 한번 세팅하면 바꿀 일이 없는데 퍼블릭으로 노출 됌
+
+ai 참조
+
+### 1. ✅ 생성자 주입 (가장 권장됨)
+
+```java
+@Component
+public class MyService {
+    private final MemberRepository memberRepository;
+
+    // 의존성을 생성자에서 주입
+    public MyService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+}
+```
+
+- **장점**
+  - 💡 **불변성 보장**: `final` 키워드를 통해 의존성 변경 방지 가능.
+  - 💡 **테스트 용이성**: 생성자를 통해 명시적으로 의존성을 주입 → 테스트 코드에서 쉽게 mock 주입 가능.
+  - 💡 **컴파일 타임 체크**: 의존성이 누락되면 컴파일 또는 애플리케이션 시작 시점에 오류 발생.
+  - 💡 **명확한 의존성 표시**: 코드만 봐도 어떤 의존성이 필요한지 한눈에 알 수 있음.
+
+---
+
+### 2. ❌ 필드 주입 (`@Autowired` 직접 필드에)
+
+```java
+@Component
+public class MyService {
+    @Autowired
+    private MemberRepository memberRepository;
+}
+```
+
+- **단점**
+  - ⚠️ **불변성 보장 X**: `final`을 사용할 수 없고, 런타임 시 변경 가능.
+  - ⚠️ **테스트 어려움**: 리플렉션을 써야 의존성을 바꿀 수 있어서 mocking 어렵고 번거로움.
+  - ⚠️ **컴포넌트 스캔에 의존**: 의존성 주입이 런타임에 일어나서, 명시적인 생성자 호출과 달리 IDE 지원이나 리팩토링 시 약함.
+  - ⚠️ **은닉된 의존성**: 필드만 보고는 클래스 외부에서 어떤 의존성이 필요한지 알기 어려움.
+
+---
+
+### 3. ⚠️ Setter 주입 (필요한 경우만 사용)
+
+```java
+@Component
+public class MyService {
+    private MemberRepository memberRepository;
+
+    @Autowired
+    public void setMemberRepository(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+}
+```
+
+- **장점**
+  - 의존성 변경이 가능함 (선택적 의존성이나 순환 참조 해결 시 유용)
+- **단점**
+
+  - `public` setter를 노출해야 하므로 캡슐화가 깨짐
+  - 변경되지 않아야 할 의존성도 외부에서 바꿀 수 있음
+
+- **항상 생성자 주입을 기본으로 사용하세요.**
+- **Lombok의 `@RequiredArgsConstructor`**를 쓰면 생성자 주입을 깔끔하게 만들 수 있어요.
+  ```java
+  @RequiredArgsConstructor
+  @Service
+  public class MyService {
+      private final MemberRepository memberRepository;
+  }
+  ```
