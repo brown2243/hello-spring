@@ -135,3 +135,49 @@ java -jar build/libs/hello-spring-0.0.1-SNAPSHOT.jar
 
 - 테스트 케이스는 한글로도 많이 적는다.
 - given -> when -> then
+
+# 5. 스프링 빈과 의존관계
+
+## 컴포넌트 스캔과 자동 의존관계 설정
+
+- @Controller 있으면, 스프링이 객체 생성 및 관리
+- 스프링 컨테이너에서 스프링 빈이 관리된다 라는 표현을 사용
+- 하나의 서비스를 여러 컨트롤러에서 사용할 수 있는데, 전통적으로 new 로 생성하면 다른 객체를 사용함
+  - JS에선 파일에서 객체를 생성하고 참조를 export 하는게 가능
+- 스프링 컨테이너에 등록하면 하나만 생성되고, 여러 부가적 장점이 있음!
+- @AutoWired이 붙으면 스프링 컨테이너가 객체 실행시, 등록된 객체의 참조를 주입
+- DI
+
+### 스프링 빈을 등록하는 2가지 방법
+
+- 컴포넌트 스캔과 자동 의존관계 설정
+- 자바 코드로 직접 등록
+
+- `@Component` 를 포함하는 다음 애노테이션도 스프링 빈으로 자동 등록된다.
+- 시작점은 `@SpringBootApplication`
+
+  - `@Controller`
+  - `@Service`
+  - `@Repository`
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Service {
+
+	/**
+	 * Alias for {@link Component#value}.
+	 */
+	@AliasFor(annotation = Component.class)
+	String value() default "";
+
+}
+```
+
+- 스프링 빈은 기본적으로 싱글톤으로 동작
+  - 메모리 절약
+  - 설정으로 싱글톤이 아니게 가능하지만 일반적으로 사용안함
+
+## 자바 코드로 직접 스프링 빈 등록하기
