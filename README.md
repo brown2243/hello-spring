@@ -282,3 +282,13 @@ public class MyService {
       private final MemberRepository memberRepository;
   }
   ```
+
+# 6. 회원 관리 예제 - WEB MVC개발
+
+## 홈 화면 추가
+
+- 정적 페이지보다 controller가 선순위!
+
+## 등록
+
+## 조회
