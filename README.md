@@ -301,7 +301,17 @@ public class MyService {
 - JPA 도 오래된 기술로 스프링에서 쓰게 한번 래핑한게 Spring data JPA
 
 ## 순수 JDBC
+```
+# build.gradle
+implementation 'org.springframework.boot:spring-boot-starter-jdbc' 
+runtimeOnly 'com.mysql:mysql-connector-j'
 
+# application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/hello?serverTimezone=UTC&characterEncoding=UTF-8
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=
+spring.datasource.password=
+```
 - 자바는 DB연결하려면 JDBC 드라이버가 필수
 - 급 여의도 SI 썰... 순수한 코드...
 - JdbcMemberRepository만 들고 컨피그에서 갈아 끼워 준 것만으로 디비바꿈
