@@ -129,4 +129,9 @@ java -jar build/libs/hello-spring-0.0.1-SNAPSHOT.jar
 
 ## 회원 서비스 개발
 
+코드작성
+
 ## 회원 서비스 테스트
+
+- 테스트 케이스는 한글로도 많이 적는다.
+- given -> when -> then
