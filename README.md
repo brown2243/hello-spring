@@ -356,6 +356,26 @@ spring.datasource.password=
 
 ## 스프링 jdbc template
 
+- 라이브러리는 JDBC API에서 본 반복 코드를 대부분 제거해준다.
+  - jdbc driver api로 작성하던 코드를 줄이고 줄인 jdbcTemplate!
+  - template 디자인 패턴을 적용했다 함
+- 하지만 SQL은 직접 작성해야 한다.
+- dataSource를 injection 받아야 함
+
+- 생성자가 하나고, spring bean으로 등록되면 autowird 생략가능
+  - 암묵적 생성자 주입(implicit constructor injection)
+  - 안쓰는게 더 명시적일 것 같다.
+
+```java
+// 여러 row 일수도 있으니 List인건 알겠다
+// 파리미터로 전달받은 id를 명시적으로 넘기지 않는데 ?에 왜 id가 들어가는걸까?
+
+// 오타심
+List<Member> result = jdbcTemplate.query("select * from member where id = ?", memberRowMapper());
+    return result.stream().findAny();
+
+```
+
 ## JPA
 
 ## 스프링 데이터 JPA
