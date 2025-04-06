@@ -301,9 +301,10 @@ public class MyService {
 - JPA 도 오래된 기술로 스프링에서 쓰게 한번 래핑한게 Spring data JPA
 
 ## 순수 JDBC
+
 ```
 # build.gradle
-implementation 'org.springframework.boot:spring-boot-starter-jdbc' 
+implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 runtimeOnly 'com.mysql:mysql-connector-j'
 
 # application.properties
@@ -312,6 +313,7 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.username=
 spring.datasource.password=
 ```
+
 - 자바는 DB연결하려면 JDBC 드라이버가 필수
 - 급 여의도 SI 썰... 순수한 코드...
 - JdbcMemberRepository만 들고 컨피그에서 갈아 끼워 준 것만으로 디비바꿈
@@ -321,7 +323,36 @@ spring.datasource.password=
 - 스프링의 DI (Dependencies Injection)을 사용하면 기존 코드를 전혀 손대지 않고, 설정만으로 구현 클래스를 변경할 수 있다.
 - 영한쌤 피셜 이게 객체지향의 매력
 
+- DDL : Data Define Language 의 약자로, 스키마/도메인/테이블/뷰/인덱스를 정의/변경/제거할 때 사용하는 언어이다.
+
+  - 테이블을 생성하고, 테이블 내용을 변경하고, 테이블을 없애버리는 것.
+  - 흔히 CREATE, ALTER, DROP 을 떠올리면 된다.
+
+- DML : Data Manipulation Language 의 약자로, Query(질의)를 통해서 저장된 데이터를 실질적으로 관리하는 데 사용한다.
+
+  - 테이블 안의 데이터 하나하나를 추가하고 삭제하고 수정하는 것.
+  - 흔히 INSERT, DELETE, UPDATE 를 떠올리면 된다.
+
+- DCL : Data Control Language 의 약자로, 보안/무결성/회복/병행 제어 등을 정의하는데 사용한다. 데이터 관리 목적.
+
+  - 흔히 COMMIT, ROLLBACK, GRANT, REVOKE 를 떠올리면 된다.
+  - COMMIT : Transaction의 변경 내용을 최종 반영한다고 재판 결정하는 것.
+  - ROLLBACK : Transaction의 변경 내용을 모두 취소하고 이전 상태로 되돌리는 것.
+    (Transaction : Database에서 하나의 Logical Function을 수행하는 단위. 즉, 작업 하나의 단위. 하나의 Transaction은 COMMIT되거나 ROLLBACK되어야 한다. 하나의 Transaction은 정상적으로 종료되면 COMMIT을 비정상적으로 종료되면 ROLLBACK 수행. )
+    [출처] DDL, DML, DCL 차이 정리|작성자 Junee01
+
 ## 스프링 통합 테스트
+
+- @SpringBootTest
+
+  - 스프링 컨테이너와 테스트를 함께 실행한다.
+  - 통합 테스트(Integration Test)를 지원하는 어노테이션
+  - Spring Boot 전체 컨텍스트를 초기화(빈 등록, 의존성 주입 등).
+  - @Autowired나 @Inject를 통해 테스트에서 사용할 빈(서비스, 리포지토리 등)을 주입받을 수 있게 함
+
+- @Transactional
+  - 테스트에서 사용 시, 테스트 메서드 실행 후 자동 롤백
+  - 처음부터 둘다 붙여놓고 데이터가 왜 저장이 안되는지 헤맸다...
 
 ## 스프링 jdbc template
 
