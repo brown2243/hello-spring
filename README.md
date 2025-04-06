@@ -386,7 +386,7 @@ List<Member> result = jdbcTemplate.query("select * from member where id = ?", me
 - id는 find으로 조회가능
 - pk가 아닌 칼럼은 JPQL 사용해야 함
 - 쿼리 사용하려면 JPQL이라는 객체지향 쿼리를 써야함
-- `em.createQuery("select m from m" , Member.class).getResultList();`
+- `em.createQuery("select m from Member m", Member.class).getResultList();`
   - 이미 매핑이 되어있음
 - @Transactional 필수
 
@@ -400,4 +400,18 @@ List<Member> result = jdbcTemplate.query("select * from member where id = ?", me
 - 복잡한 쿼리를 어떻게 처리하나?
 - 기존의 복잡한 시스템도 다 JPA로 처리가능
 
-## 스프링 데이터 JPA
+## Spring Data JPA
+
+- Spring boot + Spring data JPA = 개발 생산성 향상
+- 구현체 없이 interface만으로 동작하는건 진짜 신기하긴 하더라.
+- 스프링 데이터 JPA는 JPA를 편리하게 사용하도록 도와주는 기술이라
+- JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습해야 한다 하심
+
+- spring data JPA가 인터페이스를 바탕으로 구현체를 생성해 bean에 등록
+- 공통화로 추출할 수 있는 메서드들은 다 이미 구현 되어있음
+- 규칙을 가지고 이름을 작성하면 그것까지 구현해줌
+- queryDSL을 사용하면 쿼리도 코드로 작성가능
+- JPA + Spring Data JPA + queryDSL 조합
+  - 우리 서비스도 동일 스택
+  - JPA도 네이티브 쿼리가능
+  - typeORM은 위 기능 전부다 지원했던 것 같은데...
