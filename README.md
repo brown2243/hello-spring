@@ -364,7 +364,6 @@ spring.datasource.password=
 
 - 생성자가 하나고, spring bean으로 등록되면 autowird 생략가능
   - 암묵적 생성자 주입(implicit constructor injection)
-  - 안쓰는게 더 명시적일 것 같다.
 
 ```java
 // 여러 row 일수도 있으니 List인건 알겠다
@@ -376,6 +375,29 @@ List<Member> result = jdbcTemplate.query("select * from member where id = ?", me
 
 ```
 
-## JPA
+## JPA(java persistance api)
+
+- JPA는 기존의 반복 코드는 물론이고, 기본적인 SQL도 JPA가 직접 만들어서 실행해준다.
+- JPA를 사용하면, SQL과 데이터 중심의 설계에서 객체 중심의 설계로 패러다임을 전환을 할 수 있다.
+- JPA를 사용하면 개발 생산성을 크게 높일 수 있다.
+
+- GenerationType.IDENTITY = db 자동 생성
+
+- id는 find으로 조회가능
+- pk가 아닌 칼럼은 JPQL 사용해야 함
+- 쿼리 사용하려면 JPQL이라는 객체지향 쿼리를 써야함
+- `em.createQuery("select m from m" , Member.class).getResultList();`
+  - 이미 매핑이 되어있음
+- @Transactional 필수
+
+  - 영속성 컨텍스트(Persistence Context) = 1차 캐시
+  - EntityManager가 관리하는 DB와 메모리 사이의 중간 계층.
+  - 트랜잭션이 시작되면 EntityManager가 영속성 컨텍스트를 생성하고,
+  - 트랜잭션이 커밋될 때 flush() → commit() 순서로 DB에 반영돼.
+  - 👉 @Transactional이 없으면 영속성 컨텍스트 자체가 제대로 생기지 않거나, flush/commit이 호출되지 않음.
+  - react-query와 유사한 면이 있다.
+
+- 복잡한 쿼리를 어떻게 처리하나?
+- 기존의 복잡한 시스템도 다 JPA로 처리가능
 
 ## 스프링 데이터 JPA
