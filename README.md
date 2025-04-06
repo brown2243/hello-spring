@@ -437,7 +437,7 @@ List<Member> result = jdbcTemplate.query("select * from member where id = ?", me
 - AOP는 명확하게 알 수 있게 컴포넌트 스캔보다 `@Configuration`에 bean으로 등록하는 편
 - `@Around("execution(* hello.hello_spring..*(..) )")`
 
-  - 특정 문법으로 대상을 지정가능
+- 특정 문법으로 대상을 지정가능
 
 - 회원가입, 회원 조회등 핵심 관심사항과 시간을 측정하는 공통 관심 사항을 분리한다.
 - 시간을 측정하는 로직을 별도의 공통 로직으로 만들었다.
@@ -450,3 +450,38 @@ List<Member> result = jdbcTemplate.query("select * from member where id = ?", me
 - 그 후, 실제 대상 객체의 메서드를 호출
 
 # 9. 다음으로
+
+야생 로드맵
+
+1. ORM JPA 기본편
+2. 실전 spirng boot + JPA 1
+3. 실전 spirng boot + JPA 2
+4. spring data jpa
+5. 실전 queryDsl
+
+# outro
+
+학습기간이 25/04/01 ~ 25/04/06으로 굉장히 달려서 들었는데 한번쯤 배워보고 싶었던 주제 + 실무에서 사용해야 함
+
+두가지의 상황이 시너지로 작용해서 즐기면서 들었다. 확실히 당장 사용할, 하는 기술을 공부하는게 재밌다.
+
+불편 했던 점
+
+1. 도메인식 폴더구조(com.example.\*) - 폴더구조가 깊어짐
+2. layer 별 구조로 controller, service, entity, repository가 다른 디렉토리에 흩어져 있어 흐름이 끊김
+   1. 전형적인 계층형 구조(Controller → Service → Repository → Entity)는 DDD(Domain-Driven Design)나 클린 아키텍처의 영향이라 한다
+   2. 익숙하지 않아서 그런듯하다. nestJS는 기능별로 모듈화
+3. 단일 파일에 하나의 클래스 - 파일이 너무 많아진다.
+   1. 자바는 오직 클래스로만 객체 생성이 가능하기에, 클래스가 많을 수 밖에 없다.
+
+---
+
+좋았던 점
+
+1. spring이 세팅이 복잡하다는데, boot로 프로젝트 세팅하면 쉽다.
+2. Optional 로 Nullable을 처리하는게 깔끔하다 느꼈다.
+3. spring data JPA로 인터페이스만으로 동작하는 것과, queryDsl의 자동 Qclass 생성은 진짜 신기하더라.
+
+하다보면서 뭔가 더 많았던 것 같은데 정리하려니 이것밖에 생각이 안난다.
+
+더 배워가면서, 느껴 볼 예정이다.
